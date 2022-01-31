@@ -3,5 +3,6 @@ Follow the instructions [here to set up flask](https://flask.palletsprojects.com
 Then run the following commands to run the flask server
 
 $ export FLASK_ENV=development
+
 $ flask run
 
