@@ -3,13 +3,16 @@ Follow the instructions [here to set up flask](https://flask.palletsprojects.com
 
 Then run the following bash commands to run the flask server
 
+```bash
 $ export FLASK_ENV=app
 
 $ flask run
-
+```
 
 or for powershell users...
 
+```powershell
 $env:FLASK_ENV = "development"
 
 flask run
+```
