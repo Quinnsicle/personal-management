@@ -10,6 +10,6 @@ $ flask run
 
 or for powershell users...
 
-> $env:FLASK_ENV = "development"
+$env:FLASK_ENV = "development"
 
-> flask run
+flask run
