@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='calendar.css') }}">
+<h1>{% block title %}Time Calendar{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+<div class="month-name"> {{ month_name }}</div>
+<div class="month">
+    {% for week in month %}
+    <div class="week">
+    {% for date in week %}
+        <div class="day"><div>{{ date.strftime("%A") }}</div><div>{{ date.day }}</div></div>
+    {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+</div>
+<div class="calendar">
+    {{ month_calendar|safe }}
+</div>
+{% endblock %}
