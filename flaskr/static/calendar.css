@@ -1,0 +1,26 @@
+div {
+  width: 100%;
+}
+
+.content {
+}
+
+.month {
+  display: flex;
+  flex-direction: column;
+}
+.month-name {
+  text-align: center;
+}
+.week {
+  display: flex;
+  border: bottom 1px solid black;
+  height: 40%;
+  max-height: 300px;
+}
+.day {
+  border: 1px solid black;
+  margin: 4px;
+}
+
+
