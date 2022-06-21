@@ -11,10 +11,10 @@ import calendar as cal
 
 @bp.route("/calendar")
 def calendar():
-    year = 2020
-    month_num = 4
+    year = 2022
+    month_num = 6
 
-    month = cal.Calendar().monthdatescalendar(year, month_num)
+    month = cal.Calendar(6).monthdatescalendar(year, month_num)
 
     month_name = cal.month_name[month_num]
 
@@ -22,12 +22,5 @@ def calendar():
         "time/calendar.html",
         month=month,
         month_name=month_name,
+        month_num=month_num,
     )
-
-
-class calendar:
-    def __init__(year, month):
-        pass
-
-    def day_name(day):
-        return cal.day_name(day)
