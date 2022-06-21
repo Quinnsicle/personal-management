@@ -6,14 +6,21 @@
 {% endblock %}
 
 {% block content %}
-<div class="content">
+<div class="time">
 <div class="month-name"> {{ month_name }}</div>
 <div class="month">
     {% for week in month %}
     <div class="week">
-    {% for date in week %}
-        <div class="day"><div>{{ date.strftime("%A") }}</div><div>{{ date.day }}</div></div>
-    {% endfor %}
+        {% for date in week %}
+        {% if date.month == month_num %}
+        <div class="day acrylic-8 bg-04">
+        {% else %}
+        <div class="day acrylic-8 bg-06">
+        {% endif %}
+            <div>{{ date.strftime("%A") }}</div>
+            <div>{{ date.day }}</div>
+        </div>
+        {% endfor %}
     </div>
     {% endfor %}
 </div>
