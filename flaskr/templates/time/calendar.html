@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="time">
-<div class="month-name"> {{ month_name }}</div>
+<div class="month-name">{{ month_name }} {{ year }}</div>
 <div class="month">
     {% for week in month %}
     <div class="week">
@@ -21,6 +21,12 @@
             <div>{{ date.day }}</div>
         </div>
         {% endfor %}
+    </div>
+    <div class="timeline">
+        <div class="shadow"></div>
+        <div class="slider">
+
+        </div>
     </div>
     {% endfor %}
 </div>
