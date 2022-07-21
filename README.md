@@ -1,6 +1,11 @@
 Follow the instructions [here to set up flask](https://flask.palletsprojects.com/en/2.1.x/installation/).
 
-Then run the following bash commands to run the flask server
+Initialize the database
+```bash
+flask init-db
+```
+
+Run the following bash commands to run the flask server
 
 ```bash
 . venv/bin/activate
