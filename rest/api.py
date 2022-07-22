@@ -7,6 +7,9 @@ from flask import (
     g,
     jsonify,
     request,
+    render_template,
+    redirect,
+    url_for,
 )
 
 from rest.db import get_db
@@ -19,39 +22,33 @@ def test_data():
     return jsonify({'name': 'alice',
                     'email': 'alice@outlook.com'})
 
-@bp.route('/get', methods=['GET'])
+@bp.route('/create', methods=['GET', 'POST'])
+def create_record():
+    if request.method == "POST":
+        db = get_db()
+        db.execute(
+            "INSERT INTO activity (name, start_date_time, end_date_time, category, tags)" 
+            " VALUES (?, ?, ?, ?, ?)",
+            (request.form['name'], request.form['start_date_time'], request.form['end_date_time'], request.form['category'], request.form['tags'])
+        )
+        db.commit()
+        return redirect(url_for("api.query_records"))
+
+    return render_template("create.html")
+
+@bp.route('/read', methods=['GET'])
 def query_records():
 
     db = get_db()
-    event = (
+    events = (
         db.execute(
             "SELECT name, start_date_time, end_date_time, category, tags FROM activity"
         )
-    ).fetchone()
+    ).fetchall()
 
-    
-    if event is None:
-        abort(404, f"event doesn't exist.")
+    return render_template("read.html", events=events)
 
-    return jsonify({'name': event['name'],
-                    'start_date_time': event['start_date_time'],
-                    'end_date_time': event['end_date_time'],
-                    'category': event['category'],
-                    'tags': event['tags']})
-
-@bp.route('/put', methods=['GET', 'PUT'])
-def create_record():
-    db = get_db()
-    db.execute(
-        "INSERT INTO activity (name, start_date_time, end_date_time, category, tags)" 
-        " VALUES ('work', datetime('2022-07-21 07:00'), datetime('2022-07-21 16:00'), 'work', 'aoeu')",
-        ()
-    )
-    db.commit()
-
-    return "created record"
-
-@bp.route('/post', methods=['POST'])
+@bp.route('/update', methods=['POST'])
 def update_record():
     record = json.loads(request.data)
 
