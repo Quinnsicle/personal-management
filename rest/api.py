@@ -67,7 +67,7 @@ def update_record():
     return "updated record"
     
 @bp.route('/delete', methods=['DELETE'])
-def delte_record():
+def delete_record():
     record = json.loads(request.data)
 
     db = get_db()
