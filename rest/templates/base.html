@@ -1,13 +1,13 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Flaskr</title>
+<title>{% block title %}{% endblock %} - REST</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <script type="module" src="https://unpkg.com/@material/mwc-icon@^0.3.0/mwc-icon.js?module"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <nav>
-	<h1>Flaskr</h1>
+	<h1>REST</h1>
 	<ul>
-		<li><a href="{{ url_for('api.create_record') }}">Create</a></li>
-		<li><a href="{{ url_for('api.query_records') }}">Read</a></li>
+		<li><a href="{{ url_for('api.create') }}">Create</a></li>
+		<li><a href="{{ url_for('api.read') }}">Read</a></li>
 	</ul>
 </nav>
 <section class="content">

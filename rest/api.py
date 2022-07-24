@@ -11,68 +11,89 @@ from flask import (
     redirect,
     url_for,
 )
-
 from rest.db import get_db
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
 
-@bp.route("/test", methods=['GET'])
+@bp.route("/")
 def test_data():
-    return jsonify({'name': 'alice',
-                    'email': 'alice@outlook.com'})
+    return redirect(url_for("api.read"))
 
 @bp.route('/create', methods=['GET', 'POST'])
-def create_record():
+def create():
     if request.method == "POST":
-        db = get_db()
-        db.execute(
-            "INSERT INTO activity (name, start_date_time, end_date_time, category, tags)" 
-            " VALUES (?, ?, ?, ?, ?)",
-            (request.form['name'], request.form['start_date_time'], request.form['end_date_time'], request.form['category'], request.form['tags'])
-        )
-        db.commit()
-        return redirect(url_for("api.query_records"))
+        create_record(request.form)
+        return redirect(url_for("api.read"))
 
     return render_template("create.html")
 
 @bp.route('/read', methods=['GET'])
-def query_records():
-
-    db = get_db()
-    events = (
-        db.execute(
-            "SELECT name, start_date_time, end_date_time, category, tags FROM activity"
-        )
-    ).fetchall()
+def read():
+    events = read_all_records()
 
     return render_template("read.html", events=events)
 
 @bp.route('/update', methods=['POST'])
-def update_record():
+def update():
     record = json.loads(request.data)
 
+    update_record(record)
+
+    return "updated record"
+    
+@bp.route('/delete', methods=['DELETE'])
+def delete():
+    request = json.loads(request.data)
+
+    delete_record(request)
+
+    return "deleted record"
+
+
+def create_record(record):
+    db = get_db()
+    db.execute(
+        "INSERT INTO activity (name, start_date_time, end_date_time, category, tags)" 
+        " VALUES (?, ?, ?, ?, ?)",
+        (record['name'], 
+         record['start_date_time'], 
+         record['end_date_time'], 
+         record['category'], 
+         record['tags'])
+    )
+    db.commit()
+    return
+
+def read_all_records():
+    db = get_db()
+    events = (
+        db.execute(
+            "SELECT name, start_date_time, end_date_time, category, tags"
+            " FROM activity"
+        )
+    ).fetchall()
+    return events
+
+def update_record(record):
     db = get_db()
     db.execute(
         "UPDATE table"
         "SET name = ?,"
         "WHERE id = ? ",
-        (record['name'], record['id'])
+        (record['name'],
+         record['id'])
     )
     db.commit()
+    return
 
-    return "updated record"
-    
-@bp.route('/delete', methods=['DELETE'])
-def delete_record():
-    record = json.loads(request.data)
-
+def delete_record(record):
     db = get_db()
     db.execute(
         "DELETE from activity"
         "WHERE start_date_time = ? AND end_date_time = ?",
-        (record['start_date_time'], record['end_date_time'])
+        (record['start_date_time'],
+         record['end_date_time'])
     )
     db.commit()
-
-    return "deleted record"
+    return
