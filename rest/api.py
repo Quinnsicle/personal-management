@@ -1,6 +1,7 @@
 import functools
 from re import U
 import json
+import sqlite3
 from werkzeug.exceptions import abort
 from flask import (
     Blueprint,
@@ -11,7 +12,7 @@ from flask import (
     redirect,
     url_for,
 )
-from rest.db import get_db
+from rest.dal.db import get_db
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -54,7 +55,7 @@ def delete():
 def create_record(record):
     db = get_db()
     db.execute(
-        "INSERT INTO activity (name, start_date_time, end_date_time, category, tags)" 
+        "INSERT INTO event (name, start_date_time, end_date_time, category, tags)" 
         " VALUES (?, ?, ?, ?, ?)",
         (record['name'], 
          record['start_date_time'], 
@@ -70,7 +71,7 @@ def read_all_records():
     events = (
         db.execute(
             "SELECT name, start_date_time, end_date_time, category, tags"
-            " FROM activity"
+            " FROM event"
         )
     ).fetchall()
     return events
@@ -90,7 +91,7 @@ def update_record(record):
 def delete_record(record):
     db = get_db()
     db.execute(
-        "DELETE from activity"
+        "DELETE from event"
         "WHERE start_date_time = ? AND end_date_time = ?",
         (record['start_date_time'],
          record['end_date_time'])

@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS activity;
 
-CREATE TABLE activity (
+CREATE TABLE event (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   start_date_time TEXT NOT NULL,
