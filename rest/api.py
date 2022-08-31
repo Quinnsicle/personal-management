@@ -1,4 +1,5 @@
-import datetime
+import csv
+import io
 import functools
 from re import U
 import json
@@ -13,85 +14,73 @@ from flask import (
     redirect,
     url_for,
 )
-from rest.dal.db import get_db
-from rest.dal.event import read_all
+from flask.views import MethodView
+from rest.dal.event import *
 
 bp = Blueprint("api", __name__, url_prefix="/api")
 
 
-def create_record(record):
-    db = get_db()
-    db.execute(
-        "INSERT INTO event (name, start_date_time, end_date_time, category, tags)" 
-        " VALUES (?, ?, ?, ?, ?)",
-        (record['name'], 
-         record['start_date_time'], 
-         record['end_date_time'], 
-         record['category'], 
-         record['tags'])
-    )
-    db.commit()
-    return
+class Events(MethodView):
+    @staticmethod
+    def output_format(events: list, format: str = "json"):
+        if format == "csv":
+            csv_out = io.StringIO()
 
-def read_all_records():
-    db = get_db()
-    rows = (
-        db.execute(
-            "SELECT name, start_date_time, end_date_time, category, tags"
-            " FROM event"
-        )
-    ).fetchall()
-    events = [dict(row) for row in rows]
-    return events
+            keys = events[0].keys()
 
-def read_all_records_within_year(year):
-    start_date = "{}-01-01".format(year)
-    end_date = "{}-12-31".format(year)
-    db = get_db()
-    rows = (
-        db.execute(
-            "SELECT name, start_date_time, end_date_time, category, tags"
-            " FROM event WHERE date(start_date_time) BETWEEN ? AND ?",
-            (start_date, end_date))
-    ).fetchall()
-    events = [dict(row) for row in rows]
-    return events
+            dict_writer = csv.DictWriter(csv_out, keys)
+            dict_writer.writeheader()
+            dict_writer.writerows(events)
 
-def read_all_records_within_week(year, week):
-    year_week = "{}-W{}".format(year, week)
-    start_date = datetime.datetime.strptime(year_week + '-1', "%Y-W%W-%w").strftime("%Y-%m-%d")
-    end_date = datetime.datetime.strptime(year_week + '-0', "%Y-W%W-%w").strftime("%Y-%m-%d")
-    print(start_date)
-    print(end_date)
-    db = get_db()
-    rows = (
-        db.execute(
-            "SELECT name, start_date_time, end_date_time, category, tags"
-            " FROM event WHERE date(start_date_time) BETWEEN ? AND ?",
-            (start_date, end_date,))
-    ).fetchall()
-    events = [dict(row) for row in rows]
-    return events
+            return csv_out.getvalue()
 
-def update_record(record):
-    db = get_db()
-    db.execute(
-        "UPDATE table"
-        "SET name = ?,"
-        "WHERE id = ? ",
-        (record['name'],
-         record['id'])
-    )
-    db.commit()
-    return
+        if format == "json":
+            return json.dumps(events)
 
-def delete_record(record):
-    db = get_db()
-    db.execute(
-        "DELETE from event"
-        "WHERE start_date_time = ? AND end_date_time = ?",
-        (record['start_date_time'],
-         record['end_date_time'])
-    )
-    db.commit()
-    return
+        return "sorry, this api doesn't support " + format
+
+    def get(self):
+        year = request.args.get("year")
+        week = request.args.get("week")
+        format = request.args.get("format")
+        if format is None:
+            format = "json"
+        if year and week:
+            return self.output_format(read_all_records_within_week(year, week), format)
+        if year:
+            return self.output_format(read_all_records_within_year(year), format)
+
+        events = read_all_records()
+        return self.output_format(read_all_records(), format)
+
+    def post(self):
+        # create a new event
+        pass
+
+    def delete(self, event_id):
+        # delete a single event
+        pass
+
+    def put(self, event_id):
+        # update a single event
+        pass
+
+
+event_view = Events.as_view("events_api")
+bp.add_url_rule(
+    "/events",
+    view_func=event_view,
+    methods=[
+        "GET",
+    ],
+)
+bp.add_url_rule(
+    "/",
+    view_func=event_view,
+    methods=[
+        "POST",
+    ],
+)
+bp.add_url_rule(
+    "/<int:event_id>", view_func=event_view, methods=["GET", "PUT", "DELETE"]
+)

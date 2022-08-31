@@ -1,8 +1,8 @@
 import os
 
 from flask import Flask
-from . import api, crud, events
-from .dal import db
+from . import api, crud
+from . import db
 
 
 def create_app(test_config=None):
@@ -26,6 +26,5 @@ def create_app(test_config=None):
 
     app.register_blueprint(api.bp)
     app.register_blueprint(crud.bp)
-    app.register_blueprint(events.bp)
 
     return app
