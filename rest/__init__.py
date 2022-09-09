@@ -1,8 +1,7 @@
 import os
 
 from flask import Flask
-from . import api, crud
-from . import db
+from rest import api, crud, db, database
 
 
 def create_app(test_config=None):
@@ -23,6 +22,7 @@ def create_app(test_config=None):
         pass
 
     db.init_app(app)
+    database.init_db()
 
     app.register_blueprint(api.bp)
     app.register_blueprint(crud.bp)

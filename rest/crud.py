@@ -10,7 +10,8 @@ from flask import (
     redirect,
     url_for,
 )
-from rest.dal.event import *
+from rest.models import Event
+from rest.database import db_session
 
 bp = Blueprint("crud", __name__, url_prefix="/crud")
 
@@ -23,7 +24,14 @@ def test_data():
 @bp.route("/create", methods=["GET", "POST"])
 def create():
     if request.method == "POST":
-        create_record(request.form)
+        record = request.form
+        db_session.add(Event(record["name"],
+                             record["start_date_time"],
+                             record["end_date_time"],
+                             record["category"],
+                             record["tags"],
+                             ))
+        db_session.commit()
         return redirect(url_for("crud.read"))
 
     return render_template("create.html")
@@ -31,8 +39,7 @@ def create():
 
 @bp.route("/read", methods=["GET"])
 def read():
-    events = read_all_records()
-
+    events = Event.query.all()
     return render_template("read.html", events=events)
 
 
@@ -40,15 +47,15 @@ def read():
 def update():
     record = json.loads(request.data)
 
-    update_record(record)
+    # update record
 
-    return "updated record"
+    return "updated record-- not yet implemented!!"
 
 
 @bp.route("/delete", methods=["DELETE"])
 def delete():
     request = json.loads(request.data)
 
-    delete_record(request)
+    # delete record
 
-    return "deleted record"
+    return "deleted record-- not yet implemented!!"
