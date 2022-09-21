@@ -75,10 +75,10 @@ class Events2(MethodView):
         if format == "csv":
             csv_out = io.StringIO()
             
-            header_columns = events[0].headers()
+            keys = Event.__table__.columns.keys()
 
-            writer = csv.writer(csv_out, header_columns)
-            writer.writerow(header_columns)
+            writer = csv.writer(csv_out, keys)
+            writer.writerow(keys)
             for event in events:
                 writer.writerow([event.name, 
                                  event.start_date_time, 

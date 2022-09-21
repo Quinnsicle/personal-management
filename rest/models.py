@@ -16,9 +16,6 @@ class Event(Base, BaseModel):
   tags: str = sa.Column(sa.String(40), nullable=True)
   author_id: str = sa.Column(sa.String(20), sa.ForeignKey('user.id'), nullable=False)
   
-  def headers(self):
-    return [c.name for c in self.__table__.columns]
-  
   def __init__(self, name, start_date_time, end_date_time, category=None, tags=None, author_id='test'):
     self.name = name
     self.start_date_time = datetime.strptime(start_date_time, '%Y-%m-%d %H:%M')
