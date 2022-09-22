@@ -60,6 +60,8 @@ class Events(MethodView):
             end_date = datetime.datetime.strptime(year_week + "-0", "%Y-W%W-%w").strftime("%Y-%m-%d")
             return self.output_format(Event.query.filter(Event.start_date_time.between(start_date, end_date)).all(), format)
         if year:
+            start_date = "{}-01-01".format(year)
+            end_date = "{}-12-31".format(year)
             return self.output_format(Event.query.filter(Event.start_date_time.between(start_date, end_date)).all(), format)
 
         return self.output_format(Event.query.all(), format)
