@@ -18,8 +18,8 @@ class Event(Base, BaseModel):
   
   def __init__(self, name, start_date_time, end_date_time, category=None, tags=None, author_id='test'):
     self.name = name
-    self.start_date_time = datetime.strptime(start_date_time, '%Y-%m-%d %H:%M')
-    self.end_date_time = datetime.strptime(end_date_time, '%Y-%m-%d %H:%M')
+    self.start_date_time = datetime.fromisoformat(start_date_time)
+    self.end_date_time = datetime.fromisoformat(end_date_time)
     self.category = category
     self.tags = tags
     self.author_id = author_id

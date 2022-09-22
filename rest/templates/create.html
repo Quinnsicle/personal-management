@@ -9,9 +9,9 @@
         <label for="name">Name</label>
         <input name="name" id="name" value="{{ request.form['name'] }}" required/>
         <label for="start_date_time">Start Date Time</label>
-        <input name="start_date_time" id="start_date_time" value="{{ request.form['start_date_time'] }}" required/>
+        <input name="start_date_time" id="start_date_time" type="datetime-local" value="{{ request.form['start_date_time'] }}" required>
         <label for="end_date_time">End Date Time</label>
-        <input name="end_date_time" id="end_date_time" value="{{ request.form['end_date_time'] }}" required/>
+        <input name="end_date_time" id="end_date_time" type="datetime-local" value="{{ request.form['end_date_time'] }}" required/>
         <label for="category">Category</label>
         <input name="category" id="category" value="{{ request.form['category'] }}" required/>
         <label for="tags">Tags</label>
