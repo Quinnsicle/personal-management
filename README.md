@@ -1,15 +1,17 @@
 Follow the instructions [here to set up flask](https://flask.palletsprojects.com/en/2.1.x/installation/).
 
-Initialize the database
+
+install dependencies
 ```bash
-flask init-db
+pip install flask_sqlalchemy
 ```
+
 
 Run the following bash commands to run the flask server
 
 ```bash
 . venv/bin/activate
-export FLASK_APP=flaskr
+export FLASK_APP=rest
 export FLASK_ENV=development
 flask run
 ```
