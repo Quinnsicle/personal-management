@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from rest import api, crud, db, database
+from rest import api, crud, database
 
 
 def create_app(test_config=None):
@@ -21,7 +21,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    db.init_app(app)
     database.init_db()
 
     app.register_blueprint(api.bp)
