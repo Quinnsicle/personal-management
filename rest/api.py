@@ -1,4 +1,5 @@
 import csv
+import datetime as dt
 import io
 import functools
 from re import U
@@ -16,7 +17,6 @@ from flask import (
 )
 from flask.views import MethodView
 from rest.models import Event
-from rest.dal.event import *
 from flask_sqlalchemy import *
 
 bp = Blueprint("api", __name__, url_prefix="/api")
@@ -56,8 +56,8 @@ class Events(MethodView):
             format = "json"
         if year and week:
             year_week = "{}-W{}".format(year, week)
-            start_date = datetime.datetime.strptime(year_week + "-1", "%Y-W%W-%w").strftime("%Y-%m-%d")
-            end_date = datetime.datetime.strptime(year_week + "-0", "%Y-W%W-%w").strftime("%Y-%m-%d")
+            start_date = dt.datetime.strptime(year_week + "-1", "%Y-W%W-%w").strftime("%Y-%m-%d")
+            end_date = dt.datetime.strptime(year_week + "-0", "%Y-W%W-%w").strftime("%Y-%m-%d")
             return self.output_format(Event.query.filter(Event.start_date_time.between(start_date, end_date)).all(), format)
         if year:
             start_date = "{}-01-01".format(year)
