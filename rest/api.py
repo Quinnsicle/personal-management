@@ -1,19 +1,10 @@
 import csv
 import datetime as dt
 import io
-import functools
-from re import U
-import json
-import sqlite3
-from werkzeug.exceptions import abort
 from flask import (
     Blueprint,
-    g,
     jsonify,
     request,
-    render_template,
-    redirect,
-    url_for,
 )
 from flask.views import MethodView
 from rest.models import Event
