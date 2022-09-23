@@ -7,20 +7,21 @@ from flask import (
     request,
 )
 from flask.views import MethodView
-from rest.models import Event
+from rest.models import Event as EventModel
 from flask_sqlalchemy import *
 
-bp = Blueprint("api", __name__, url_prefix="/api")
+api = Blueprint("api", __name__, url_prefix="/api")
 
 
 
-class Events(MethodView):
+class Event(MethodView):
+    
     @staticmethod
     def output_format(events: list, format: str = "json"):
         if format == "csv":
             csv_out = io.StringIO()
             
-            keys = Event.__table__.columns.keys()
+            keys = EventModel.__table__.columns.keys()
 
             writer = csv.writer(csv_out, keys)
             writer.writerow(keys)
@@ -49,13 +50,13 @@ class Events(MethodView):
             year_week = "{}-W{}".format(year, week)
             start_date = dt.datetime.strptime(year_week + "-1", "%Y-W%W-%w").strftime("%Y-%m-%d")
             end_date = dt.datetime.strptime(year_week + "-0", "%Y-W%W-%w").strftime("%Y-%m-%d")
-            return self.output_format(Event.query.filter(Event.start_date_time.between(start_date, end_date)).all(), format)
+            return self.output_format(EventModel.query.filter(EventModel.start_date_time.between(start_date, end_date)).all(), format)
         if year:
             start_date = "{}-01-01".format(year)
             end_date = "{}-12-31".format(year)
-            return self.output_format(Event.query.filter(Event.start_date_time.between(start_date, end_date)).all(), format)
+            return self.output_format(EventModel.query.filter(EventModel.start_date_time.between(start_date, end_date)).all(), format)
 
-        return self.output_format(Event.query.all(), format)
+        return self.output_format(EventModel.query.all(), format)
 
     def post(self):
         # create a new event
@@ -70,21 +71,21 @@ class Events(MethodView):
         pass
 
 
-event_view = Events.as_view("events_api")
-bp.add_url_rule(
+event_view = Event.as_view("event_api", EventModel)
+api.add_url_rule(
     "/events",
     view_func=event_view,
     methods=[
         "GET",
     ],
 )
-bp.add_url_rule(
+api.add_url_rule(
     "/",
     view_func=event_view,
     methods=[
         "POST",
     ],
 )
-bp.add_url_rule(
+api.add_url_rule(
     "/<int:event_id>", view_func=event_view, methods=["GET", "PUT", "DELETE"]
 )
