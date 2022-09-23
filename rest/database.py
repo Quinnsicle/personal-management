@@ -1,6 +1,4 @@
 import sqlalchemy as sa
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 
 engine = sa.create_engine('sqlite:////tmp/test.db')
 db_session = sa.orm.scoped_session(sa.orm.sessionmaker(autocommit=False,
