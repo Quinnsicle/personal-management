@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='day.css') }}">
+<h1 style="color:#1F2933">{% block title %}Day Calendar{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="row day">
+<div class="column time">
+    <div class="hour">12am</div>
+    <div class="hour">1am</div>
+    <div class="hour">2am</div>
+    <div class="hour">3am</div>
+    <div class="hour">4am</div>
+    <div class="hour">5am</div>
+    <div class="hour">6am</div>
+    <div class="hour">7am</div>
+    <div class="hour">8am</div>
+    <div class="hour">9am</div>
+    <div class="hour">10am</div>
+    <div class="hour">11am</div>
+    <div class="hour">12am</div>
+    <div class="hour">1pm</div>
+    <div class="hour">2pm</div>
+    <div class="hour">3pm</div>
+    <div class="hour">4pm</div>
+    <div class="hour">5pm</div>
+    <div class="hour">6pm</div>
+    <div class="hour">7pm</div>
+    <div class="hour">8pm</div>
+    <div class="hour">9pm</div>
+    <div class="hour">10pm</div>
+    <div class="hour">11pm</div>
+    <div class="hour">12pm</div>
+</div>
+<div class="column events">
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+    <div class="lines"></div>
+
+</div>
+</div>
+
+
+<!-- <div class="day">
+    <div id="24" class="hour">
+        <div class="day-number">24</div>
+    </div>
+    <div id="01" class="hour">
+        <div class="day-number">1</div>
+    </div>
+</div> -->
+
+{% endblock %}

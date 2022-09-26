@@ -1,0 +1,44 @@
+
+.row {
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+    width: 100%;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    /* flex-basis: 100%;
+    flex: 1; */
+}
+
+.day {
+    background: #323F4B;
+}
+
+.time {
+    width: 60px;
+}
+
+.hour {
+    color: #cbd2d9;
+    border-color:#52606D;
+    border-right-style: solid;
+    border-top-style: solid;
+    height:48px;
+}
+
+.events {
+    width: 100%;
+}
+
+.lines {
+    height: 48px;
+    border-color: #52606D;
+    border-top-style: solid;
+}
+
+
+
+

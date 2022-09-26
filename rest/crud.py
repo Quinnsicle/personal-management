@@ -59,3 +59,10 @@ def delete():
     # delete record
 
     return "deleted record-- not yet implemented!!"
+
+
+
+
+@bp.route("/day")
+def day():
+    return render_template("time/day.html")

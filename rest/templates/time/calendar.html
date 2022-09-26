@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<link rel="stylesheet" href="{{ url_for('static', filename='calendar.css') }}">
+<h1>{% block title %}Time Calendar{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="time">
+<div class="month-name">{{ month_name }} {{ year }}</div>
+<div class="month panel-body">
+{% for week in month %}
+    {% for date in week %}
+    <a class="panel-item-wrapper row-box">
+      <div class="panel-item day {% if date.month == month_num %}acrylic-8 bg-04{% else %}acrylic-8 bg-06{% endif %}">
+        <div>{{ date.strftime("%A") }}</div>
+        <div>{{ date.day }}</div>
+      </div>
+    </a>
+    <div class="timeline panel-reveal">
+        <div class="shadow"></div>
+        <div class="slider">
+
+        </div>
+    </div>
+    {% endfor %}
+{% endfor %}
+</div>
+</div>
+
+<script>
+    $(".panel-body").ready(function(){
+      console.log("test");
+      $(".panel-item-wrapper").click(function(){
+        console.log("click");
+        if($(".active").length) { //already active div 
+          if($(this).next().hasClass("active")){ // deactivate only active div
+            $(this).children(".panel-item-wrapper").toggleClass("panel-item-wrapper-active");
+            $(this).next(".panel-reveal").slideToggle(300);
+            $(this).next(".panel-reveal").toggleClass("active");
+          } else { //deactivate active div and activate newly clicked div
+            $(".panel-item-wrapper-active").toggleClass("panel-item-wrapper-active");
+            $(this).children(".panel-item-wrapper").toggleClass("panel-item-wrapper-active");
+            $(".active").slideToggle(300);
+            $(".active").toggleClass("active");
+            $(this).next(".panel-reveal").slideToggle(300);
+            $(this).next(".panel-reveal").toggleClass("active");
+          }
+        } else { //first time active
+          $(this).children(".panel-item-wrapper").toggleClass("panel-item-wrapper-active");
+          $(this).next(".panel-reveal").slideToggle(300);
+          $(this).next(".panel-reveal").toggleClass("active");
+        }
+  
+      });
+    });
+  
+    
+  </script>
+{% endblock %}
