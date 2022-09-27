@@ -8,7 +8,8 @@ class ItemAPI(MethodView):
     init_every_request = False
 
     def __init__(self, model):
-        self.model
+        pass
+        # self.model
         # self.validator = generate_validator(model)
 
     def _get_item(self, id):
@@ -16,18 +17,18 @@ class ItemAPI(MethodView):
 
     def get(self, id):
         item = self._get_item(id)
-        return jsonify(item.to_json())
+        return jsonify(item)
 
     def patch(self, id):
         item = self._get_item(id)
-        errors = self.validator.validate(item, request.json)
+        errors = self.validator.validate(item, request.get_json)
 
         if errors:
             return jsonify(errors), 400
 
-        item.update_from_json(request.json)
+        item.update_from_json(request.get_json)
         db_session.commit()
-        return jsonify(item.to_json())
+        return jsonify(item)
 
     def delete(self, id):
         item = self._get_item(id)
@@ -44,19 +45,19 @@ class GroupAPI(MethodView):
 
     def get(self):
         items = self.model.query.all()
-        return jsonify([item.to_json() for item in items])
+        return jsonify([item for item in items])
 
     def post(self):
-        errors = self.validator.validate(request.json)
+        errors = self.validator.validate(request.get_json)
 
         if errors:
             return jsonify(errors), 400
 
-        db_session.add(self.model.from_json(request.json))
+        db_session.add(self.model.from_json(request.get_json))
         db_session.commit()
         
         items = self.model.query.all()
-        return jsonify([item.to_json() for item in items])
+        return jsonify([item for item in items])
 
 def register_api(app, model, name):
     item = ItemAPI.as_view(f"{name}-item", model)

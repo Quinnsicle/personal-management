@@ -3,6 +3,8 @@ import os
 from flask import Flask
 from rest import crud, database
 from rest.blueprints.api import Event
+from rest.blueprints.api import Generic
+from rest.models import Event as event_model
 
 
 def create_app(test_config=None):
@@ -24,7 +26,9 @@ def create_app(test_config=None):
 
     database.init_db()
 
-    app.register_blueprint(Event.bp)
+    app.register_blueprint(Event.api)
     app.register_blueprint(crud.bp)
+
+    Generic.register_api(app, event_model, 'event')
 
     return app
