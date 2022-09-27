@@ -1,12 +1,12 @@
 import sqlalchemy as sa
-from rest.database import Base, BaseModel
+from rest.database import Base
 from datetime import datetime
 from dataclasses import dataclass
 
       
 
 @dataclass
-class Event(Base, BaseModel):
+class Event(Base):
   __tablename__ = 'event'
   id: int = sa.Column(sa.Integer, primary_key=True)
   name: str = sa.Column(sa.String(40), nullable=False)

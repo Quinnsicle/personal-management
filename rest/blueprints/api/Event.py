@@ -8,27 +8,25 @@ from flask import (
 )
 from flask.views import MethodView
 from rest.models import Event as EventModel
-from flask_sqlalchemy import *
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
 
-
 class Event(MethodView):
-    
+
     @staticmethod
     def output_format(events: list, format: str = "json"):
         if format == "csv":
             csv_out = io.StringIO()
-            
+
             keys = EventModel.__table__.columns.keys()
 
             writer = csv.writer(csv_out, keys)
             writer.writerow(keys)
             for event in events:
-                writer.writerow([event.name, 
-                                 event.start_date_time, 
-                                 event.end_date_time, 
+                writer.writerow([event.name,
+                                 event.start_date_time,
+                                 event.end_date_time,
                                  event.category,
                                  event.tags,
                                  event.author_id])
@@ -48,8 +46,10 @@ class Event(MethodView):
             format = "json"
         if year and week:
             year_week = "{}-W{}".format(year, week)
-            start_date = dt.datetime.strptime(year_week + "-1", "%Y-W%W-%w").strftime("%Y-%m-%d")
-            end_date = dt.datetime.strptime(year_week + "-0", "%Y-W%W-%w").strftime("%Y-%m-%d")
+            start_date = dt.datetime.strptime(
+                year_week + "-1", "%Y-W%W-%w").strftime("%Y-%m-%d")
+            end_date = dt.datetime.strptime(
+                year_week + "-0", "%Y-W%W-%w").strftime("%Y-%m-%d")
             return self.output_format(EventModel.query.filter(EventModel.start_date_time.between(start_date, end_date)).all(), format)
         if year:
             start_date = "{}-01-01".format(year)

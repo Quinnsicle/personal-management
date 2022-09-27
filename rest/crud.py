@@ -1,10 +1,6 @@
-from re import U
-import json
 from werkzeug.exceptions import abort
 from flask import (
     Blueprint,
-    g,
-    jsonify,
     request,
     render_template,
     redirect,
@@ -25,13 +21,13 @@ def test_data():
 def create():
     if request.method == "POST":
         record = request.form
-        db_session.add(Event(record["name"],
-                             record["start_date_time"],
-                             record["end_date_time"],
-                             record["category"],
-                             record["tags"],
-                             ))
-        db_session.commit()
+        db_session().add(Event(record["name"],
+                               record["start_date_time"],
+                               record["end_date_time"],
+                               record["category"],
+                               record["tags"],
+                               ))
+        db_session().commit()
         return redirect(url_for("crud.read"))
 
     return render_template("create.html")
@@ -45,7 +41,7 @@ def read():
 
 @bp.route("/update", methods=["POST"])
 def update():
-    record = json.loads(request.data)
+    record = request.get_json()
 
     # update record
 
@@ -54,13 +50,11 @@ def update():
 
 @bp.route("/delete", methods=["DELETE"])
 def delete():
-    request = json.loads(request.data)
+    request_json = request.get_json()
 
     # delete record
 
     return "deleted record-- not yet implemented!!"
-
-
 
 
 @bp.route("/day")

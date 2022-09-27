@@ -1,21 +1,24 @@
 import sqlalchemy as sa
+from sqlalchemy.ext.declarative import declarative_base
 
-engine = sa.create_engine('sqlite:////tmp/test.db')
-db_session = sa.orm.scoped_session(sa.orm.sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=engine))
-
-
-Base = sa.ext.declarative.declarative_base()
-Base.query = db_session.query_property()
-
-import typing
 
 class BaseModel():
 
     def __repr__(self) -> str:
         return self._repr(id=self.id)
 
-def init_db():
+
+def init_db(db_url):
+    engine = sa.create_engine(db_url)
     from rest.models import Event, User
     Base.metadata.create_all(bind=engine)
+
+
+def db_session():
+    return sa.orm.scoped_session(sa.orm.sessionmaker(autocommit=False,
+                                                     autoflush=False,
+                                                     bind=sa.engine))
+
+
+Base = declarative_base()
+Base.query = db_session().query_property()
