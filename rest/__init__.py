@@ -27,11 +27,11 @@ def create_app(config_file="config.py"):
         # db.session.add(event)
         db.session.commit()
 
+    app.register_blueprint(Event.api)
+    app.register_blueprint(crud.bp)
+    Generic.register_api(app, event_model, 'event')
+
     return app
 
 
 app = create_app()
-
-app.register_blueprint(Event.api)
-app.register_blueprint(crud.bp)
-Generic.register_api(app, event_model, 'event')
