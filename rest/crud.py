@@ -7,7 +7,7 @@ from flask import (
     url_for,
 )
 from rest.models import Event
-from rest.database import db
+from rest.models import db
 
 bp = Blueprint("crud", __name__, url_prefix="/crud")
 

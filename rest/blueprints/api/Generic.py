@@ -1,7 +1,7 @@
 from flask.views import MethodView
 from flask import jsonify
 from flask import request
-from rest.database import db
+from rest.models import db
 
 
 class ItemAPI(MethodView):

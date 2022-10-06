@@ -1,7 +1,9 @@
 import sqlalchemy as sa
 from datetime import datetime
 from dataclasses import dataclass
-from rest.database import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 
 @dataclass

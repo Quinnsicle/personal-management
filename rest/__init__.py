@@ -4,7 +4,6 @@ from flask import Flask
 from rest import crud
 from rest.blueprints.api import Event
 from rest.blueprints.api import Generic
-from rest.database import db
 from rest.models import Event as event_model
 
 
@@ -18,6 +17,7 @@ def create_app(config_file="config.py"):
     except OSError:
         pass
 
+    from rest.models import db
     db.init_app(app)
 
     with app.app_context():
