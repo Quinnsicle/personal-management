@@ -14,8 +14,14 @@ api = Blueprint("api", __name__, url_prefix="/api")
 
 class Event(MethodView):
 
+    def __init__(self, model) -> None:
+        self.model = model
+
     @staticmethod
-    def output_format(events: list, format: str = "json"):
+    def output_format(events, format: str = "json"):
+        if format == "json":
+            return jsonify(events)
+
         if format == "csv":
             csv_out = io.StringIO()
 
@@ -32,9 +38,6 @@ class Event(MethodView):
                                  event.author_id])
 
             return csv_out.getvalue()
-
-        if format == "json":
-            return jsonify(events)
 
         return "sorry, this api doesn't support " + format
 

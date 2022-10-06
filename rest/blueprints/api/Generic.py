@@ -1,7 +1,7 @@
 from flask.views import MethodView
 from flask import jsonify
 from flask import request
-from rest.database import db_session
+from rest.database import db
 
 
 class ItemAPI(MethodView):
@@ -27,14 +27,15 @@ class ItemAPI(MethodView):
             return jsonify(errors), 400
 
         item.update_from_json(request.get_json)
-        db_session.commit()
+        db.session.commit()
         return jsonify(item)
 
     def delete(self, id):
         item = self._get_item(id)
-        db_session.delete(item)
-        db_session.commit()
+        db.session.delete(item)
+        db.session.commit()
         return "", 204
+
 
 class GroupAPI(MethodView):
     init_every_request = False
@@ -53,11 +54,12 @@ class GroupAPI(MethodView):
         if errors:
             return jsonify(errors), 400
 
-        db_session.add(self.model.from_json(request.get_json))
-        db_session.commit()
-        
+        db.session.add(self.model.from_json(request.get_json))
+        db.session.commit()
+
         items = self.model.query.all()
         return jsonify([item for item in items])
+
 
 def register_api(app, model, name):
     item = ItemAPI.as_view(f"{name}-item", model)

@@ -7,7 +7,7 @@ from flask import (
     url_for,
 )
 from rest.models import Event
-from rest.database import db_session
+from rest.database import db
 
 bp = Blueprint("crud", __name__, url_prefix="/crud")
 
@@ -21,13 +21,13 @@ def test_data():
 def create():
     if request.method == "POST":
         record = request.form
-        db_session().add(Event(record["name"],
-                               record["start_date_time"],
-                               record["end_date_time"],
-                               record["category"],
-                               record["tags"],
-                               ))
-        db_session().commit()
+        db.session.add(Event(record["name"],
+                             record["start_date_time"],
+                             record["end_date_time"],
+                             record["category"],
+                             record["tags"],
+                             ))
+        db.session.commit()
         return redirect(url_for("crud.read"))
 
     return render_template("create.html")
