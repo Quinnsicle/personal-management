@@ -18,7 +18,7 @@ class Event(MethodView):
         self.model = model
 
     @staticmethod
-    def output_format(events, format: str = "json"):
+    def output_format(events: list, format: str = "json"):
         if format == "json":
             return jsonify(events)
 

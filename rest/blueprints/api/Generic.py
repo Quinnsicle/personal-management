@@ -9,8 +9,7 @@ class ItemAPI(MethodView):
 
     def __init__(self, model):
         pass
-        # self.model
-        # self.validator = generate_validator(model)
+        self.model = model
 
     def _get_item(self, id):
         return self.model.query.get_or_404(id)
@@ -42,19 +41,19 @@ class GroupAPI(MethodView):
 
     def __init__(self, model):
         self.model = model
-        # self.validator = generate_validator(model, create=True)
 
     def get(self):
         items = self.model.query.all()
         return jsonify([item for item in items])
 
     def post(self):
-        errors = self.validator.validate(request.get_json)
+        errors = self.model.validate(request.get_data())
 
         if errors:
+            print(errors)
             return jsonify(errors), 400
 
-        db.session.add(self.model.from_json(request.get_json))
+        db.session.add(self.model.from_json(request.get_json()))
         db.session.commit()
 
         items = self.model.query.all()

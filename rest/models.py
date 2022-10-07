@@ -1,7 +1,10 @@
+from typing import Union
+import jsonschema
 import sqlalchemy as sa
 from datetime import datetime
 from dataclasses import dataclass
 from flask_sqlalchemy import SQLAlchemy
+from jsonschema import validate
 
 db = SQLAlchemy()
 
@@ -28,13 +31,41 @@ class Event(db.Model):
 
     def __repr__(self):
         return f'''
-<Event id={self.id!r}, 
- name={self.name!r}, 
- start_date_time={self.start_date_time!r}, 
- end_date_time={self.end_date_time!r}, 
- category={self.category!r}, 
- tags={self.tags!r}, 
+<Event id={self.id!r},
+ name={self.name!r},
+ start_date_time={self.start_date_time!r},
+ end_date_time={self.end_date_time!r},
+ category={self.category!r},
+ tags={self.tags!r},
  author_id={self.author_id!r} >'''
+
+    def validate(json):
+        # Describe what kind of json you expect.
+        schema = {
+            "type": "object",
+            "properties": {
+                "id": {"type": "number"},
+                "name": {"type": "string"},
+                "author_id": {"type": "string"},
+                "start_date_time": {"type": "string"},
+                "end_date_time": {"type": "string"},
+                "category": {"type": "string"},
+                "tags": {"type": "string"},
+            }
+        }
+
+        try:
+            validate(instance=json, schema=schema)
+        except jsonschema.exceptions.ValidationError:
+            return False
+
+        return True
+
+    @classmethod
+    def from_json(cls, data: Union[list, dict]):
+        event = cls(data['name'], data['start_date_time'], data['end_date_time'],
+                    data['category'], data['tags'], data['author_id'])
+        return event
 
 
 class User(db.Model):

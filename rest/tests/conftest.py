@@ -10,10 +10,8 @@ def app():
     app = create_app("test_config.py")
 
     with app.app_context():
+        db.drop_all()
         db.create_all()
-    # get_db().executescript(_data_sql)
-
-    # a simple page that says hello
 
     @app.route('/hello')
     def hello():
