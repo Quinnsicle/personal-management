@@ -32,27 +32,24 @@ This project was developed for a friend as a way to help him manage all the data
 
 ## Try it out
 
-___TODO: Update this section___
-
-install dependencies
+First time setup of virtual environment
 ```bash
+. .venv/bin/activate
+
+pip install Flask
+pip install jsonschema
 pip install flask_sqlalchemy
 ```
 
-
 Run the following bash commands to run the flask server
-
 ```bash
-. venv/bin/activate
-export FLASK_APP=rest
-export FLASK_ENV=development
-flask run
+flask --app=rest run
 ```
 
 or for powershell users...
 
 ```powershell
-$env:FLASK_APP = "flaskr"
+$env:FLASK_APP = "rest"
 $env:FLASK_ENV = "development"
 
 flask run

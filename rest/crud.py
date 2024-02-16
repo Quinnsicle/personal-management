@@ -21,12 +21,15 @@ def test_data():
 def create():
     if request.method == "POST":
         record = request.form
-        db.session.add(Event(record["name"],
-                             record["start_date_time"],
-                             record["end_date_time"],
-                             record["category"],
-                             record["tags"],
-                             ))
+        db.session.add(
+            Event(
+                record["name"],
+                record["start_date_time"],
+                record["end_date_time"],
+                record["category"],
+                record["tags"],
+            )
+        )
         db.session.commit()
         return redirect(url_for("crud.read"))
 

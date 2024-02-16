@@ -18,6 +18,7 @@ def create_app(config_file="config.py"):
         pass
 
     from rest.models import db
+
     db.init_app(app)
 
     with app.app_context():
@@ -29,7 +30,7 @@ def create_app(config_file="config.py"):
 
     app.register_blueprint(Event.api)
     app.register_blueprint(crud.bp)
-    Generic.register_api(app, event_model, 'event')
+    Generic.register_api(app, event_model, "event")
 
     return app
 
